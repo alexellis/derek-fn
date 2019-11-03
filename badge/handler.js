@@ -36,11 +36,12 @@ module.exports = (event, context) => {
         }).catch(e=> {
             return context.fail(e.toString());
         });
-    }
+    } else {
 
-    return context
-        .status(307)
-        .headers({"Location": `https://img.shields.io/badge/derek-errored.svg`})
+        return context
+            .status(307)
+            .headers({"Location": `https://img.shields.io/badge/derek-errored.svg`})
+    }
 }
 
 function get(uri) {

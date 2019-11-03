@@ -2,7 +2,13 @@
 
 let t = require("./handler.js")
 
-t({query:{"repo":"derek","owner":"alexellis"}},
+let owner="alexellis"
+let repo="derek"
+
+// let owner="openfaas"
+// let repo="faas"
+
+t({query:{"repo":repo,"owner":owner}},
 {
     status:function(s){
         console.log("status",s)
