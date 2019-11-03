@@ -17,29 +17,36 @@ module.exports = (event, context) => {
 
         let uri = `https://raw.githubusercontent.com/${owner}/${repo}/master/.DEREK.yml`
 
-        get(uri).then(res => {
+        get(uri)
+        .then(res => {
             if(res.redirect) {
-                get(res.redirect).then(res => {
-                    return context.status(307).
-                    headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+                get(res.redirect)
+                .then(res => {
+                    return context
+                        .status(307)
+                        .headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
                 }).catch(e => {
                     return context.fail(e.toString());
                 });
+            } else {
+                return context
+                    .status(307)
+                    .headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
             }
-            return context.status(307).
-            headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
         }).catch(e=> {
             return context.fail(e.toString());
         });
     }
 
-    return context.status(307).
-    headers({"Location": `https://img.shields.io/badge/derek-errored.svg`})
+    return context
+        .status(307)
+        .headers({"Location": `https://img.shields.io/badge/derek-errored.svg`})
 }
 
 function get(uri) {
     return new Promise((resolve, reject) => {
         console.log("get",uri)
+
         axios.get(uri)
         .then(function (response) {
 
@@ -51,6 +58,7 @@ function get(uri) {
 
                 return resolve({"numFeatures": doc.features.length});
             }
+
             return reject("error")
         })
     });
