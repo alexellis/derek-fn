@@ -7,12 +7,12 @@ const querystring = require('querystring');
 module.exports = (event, context) => {
 
     if(event.query) {
-        let q = querystring.parse(event.query);
-        let repo = q.repo;
-        let owner = q.owner;
+        // let q = querystring.parse(event.query);
+        let repo = event.query.repo;
+        let owner = event.query.owner;
 
         if (!repo || !owner) {
-            return context.fail(`Give a repo and owner in the querystring: ${event.query}`);
+            return context.fail(`Give a repo and owner in the querystring.`);
         }
 
         axios.get(`https://raw.githubusercontent.com/${owner}/${repo}/master/.DEREK.yml`)
