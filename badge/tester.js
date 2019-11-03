@@ -2,11 +2,11 @@
 
 let t = require("./handler.js")
 
-let owner="alexellis"
-let repo="derek"
+// let owner="alexellis"
+// let repo="derek"
 
-// let owner="openfaas"
-// let repo="faas"
+let owner="openfaas"
+let repo="faas"
 
 t({query:{"repo":repo,"owner":owner}},
 {

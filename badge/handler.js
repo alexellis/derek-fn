@@ -61,6 +61,8 @@ function get(uri) {
             }
 
             return reject("error")
+        }).catch(e => {
+            reject(e);
         })
     });
 }
