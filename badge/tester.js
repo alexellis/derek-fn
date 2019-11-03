@@ -21,6 +21,10 @@ t({query:{"repo":repo,"owner":owner}},
     fail:function(s){
         console.log("fail",s)
         return this;
+    },
+    succeed:function(s){
+        console.log("succeed",s)
+        return this;
     }
 })
 

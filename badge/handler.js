@@ -5,9 +5,8 @@ const YAML = require('yaml')
 const querystring = require('querystring');
 
 module.exports = (event, context) => {
-
     if(event.query) {
-        // let q = querystring.parse(event.query);
+
         let repo = event.query.repo;
         let owner = event.query.owner;
 
@@ -25,6 +24,7 @@ module.exports = (event, context) => {
                     return context
                         .status(307)
                         .headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+                        .succeed()
                 }).catch(e => {
                     return context.fail(e.toString());
                 });
@@ -32,15 +32,16 @@ module.exports = (event, context) => {
                 return context
                     .status(307)
                     .headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+                    .succeed()
             }
-        }).catch(e=> {
+        }).catch(e => {
             return context.fail(e.toString());
         });
     } else {
-
         return context
             .status(307)
             .headers({"Location": `https://img.shields.io/badge/derek-errored.svg`})
+            .succeed()
     }
 }
 
