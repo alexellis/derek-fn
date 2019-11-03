@@ -23,7 +23,7 @@ module.exports = (event, context) => {
                 .then(res => {
                     return context
                         .status(307)
-                        .headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+                        .headers({"Location": `https://img.shields.io/badge/Derek::Features-${res.numFeatures}-blue`})
                         .succeed()
                 }).catch(e => {
                     return context.fail(e.toString());
@@ -31,7 +31,7 @@ module.exports = (event, context) => {
             } else {
                 return context
                     .status(307)
-                    .headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+                    .headers({"Location": `https://img.shields.io/badge/Derek::Features-${res.numFeatures}-blue`})
                     .succeed()
             }
         }).catch(e => {
