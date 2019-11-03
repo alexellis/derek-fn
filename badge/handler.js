@@ -15,18 +15,43 @@ module.exports = (event, context) => {
             return context.fail(`Give a repo and owner in the querystring.`);
         }
 
-        axios.get(`https://raw.githubusercontent.com/${owner}/${repo}/master/.DEREK.yml`)
-        .then(function (response) {
-            if(response.status == 200) {
-                let doc = YAML.parse(response.data)
-                let numFeatures = doc.features.length
+        let uri = `https://raw.githubusercontent.com/${owner}/${repo}/master/.DEREK.yml`
 
-                return context.status(307).
-                headers({"Location": `https://img.shields.io/badge/derek-${numFeatures}-features.svg`})
-            } 
-        })
+        get(uri).then(res => {
+            if(res.redirect) {
+                get(res.redirect).then(res => {
+                    return context.status(307).
+                    headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+                }).catch(e => {
+                    return context.fail(e.toString());
+                });
+            }
+            return context.status(307).
+            headers({"Location": `https://img.shields.io/badge/derek-${res.numFeatures}-features.svg`})
+        }).catch(e=> {
+            return context.fail(e.toString());
+        });
     }
 
-    context.status(307).
+    return context.status(307).
     headers({"Location": `https://img.shields.io/badge/derek-errored.svg`})
+}
+
+function get(uri) {
+    return new Promise((resolve, reject) => {
+        console.log("get",uri)
+        axios.get(uri)
+        .then(function (response) {
+
+            if(response.status == 200) {
+                let doc = YAML.parse(response.data)
+                if(doc.redirect) {
+                    return resolve({"redirect": doc.redirect})
+                }
+
+                return resolve({"numFeatures": doc.features.length});
+            }
+            return reject("error")
+        })
+    });
 }
