@@ -7,3 +7,5 @@ functions:
     lang: node10-express
     handler: ./badge
     image: badge:latest
+    labels:
+      com.openfaas.scale.zero: false
